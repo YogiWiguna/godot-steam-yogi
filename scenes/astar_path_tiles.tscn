@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw5ydma83by5o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8phv4"]
+shading_mode = 0
+albedo_color = Color(0.827451, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_c4s2e"]
+material = SubResource("StandardMaterial3D_8phv4")
+
+[node name="AstarPathTiles" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+mesh = SubResource("BoxMesh_c4s2e")

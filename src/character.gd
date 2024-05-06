@@ -2,9 +2,11 @@ extends CharacterBody3D
 class_name Character
 const BLACK_MATERIAL = preload("res://assets/materials/black_mat.tres")
 @onready var map = get_node("/root/main/Map")
+
 @onready var animation_player = $AnimationPlayer
-#@onready var a_star_map = $"../AStarMap"
+@onready var a_star_map = $"../AStarMap"
 @onready var ray_cast_3d = $RayCast3D
+@onready var navigation_agent_3d = $NavigationAgent3D
 
 
 # Char Editor 
@@ -19,12 +21,20 @@ var path_ind = 0
 const move_speed = 5
 var raycast = true
 var show_menu = true
-
+var currently_controlled : bool 
 
 func _ready():
 	animation_player.play("Idle_01")
 	add_to_group("units")
-	Utils.player_pos = position
+	
+
+func _process(delta):
+	if navigation_agent_3d.is_target_reached():
+		return
+	
+	#if map.is_player_try_move:
+		#move_to_point(delta,move_speed)
+		#
 
 func _physics_process(delta):
 	pass
@@ -59,6 +69,7 @@ func _physics_process(delta):
 				#move_and_slide()
 				## If animation finished connect it to the _on_animation_player_animation_finished functions
 				##animation_player.animation_finished.connect(_on_animation_player_animation_finished)
+
 
 func move_to(x):
 	var target = x
@@ -115,9 +126,9 @@ func _on_animation_player_animation_changed(old_name, new_name):
 	animation_player.play("Idle_01")
 	#CameraTransition.transition_camera3D(Utils.camera_second, Utils.camera_first, 1.5)
 
-func _on_input_event(camera, event, position, normal, shape_idx):
-	# Get the slot_id from raycast (player position) and Set it into the Ut
-	var mouse_selected = ray_cast_3d.get_collider().get_parent().slot_id
-	if event.is_action_pressed("left_click"):
-		map.hover_tiles(mouse_selected)
+#func _on_input_event(camera, event, position, normal, shape_idx):
+	## Get the slot_id from raycast (player position) and Set it into the Ut
+	#var mouse_selected = ray_cast_3d.get_collider().get_parent().slot_id
+	#if event.is_action_pressed("left_click"):
+		#map.hover_tiles(mouse_selected)
 

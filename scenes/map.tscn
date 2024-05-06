@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://t7vfq3ukk5ue"]
+[gd_scene load_steps=8 format=3 uid="uid://t7vfq3ukk5ue"]
 
 [ext_resource type="Script" path="res://src/map.gd" id="1_4awjs"]
 [ext_resource type="Script" path="res://src/gui.gd" id="2_3rkgo"]
 [ext_resource type="Script" path="res://src/3d_camera.gd" id="3_v5rvr"]
 [ext_resource type="Script" path="res://src/obstacle.gd" id="5_oq7qu"]
+[ext_resource type="Script" path="res://src/astar_map.gd" id="6_3wm2c"]
 [ext_resource type="Script" path="res://src/multiplayer_spawner.gd" id="8_rj8du"]
 
 [sub_resource type="Environment" id="Environment_2meu0"]
@@ -440,13 +441,16 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 2
 
-[node name="Camera3D" type="Camera3D" parent="Map"]
+[node name="Camera3D" type="Camera3D" parent="Map" groups=["Camera"]]
 transform = Transform3D(0.838671, 0.385118, -0.385118, 0, 0.707107, 0.707107, 0.544639, -0.59303, 0.59303, 0.455, 5.791, 6.485)
 current = true
 script = ExtResource("3_v5rvr")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="Map"]
 script = ExtResource("8_rj8du")
+
+[node name="AstarMap" type="Node3D" parent="Map"]
+script = ExtResource("6_3wm2c")
 
 [connection signal="timeout" from="Map/Timer" to="Map" method="_on_timer_timeout"]
 [connection signal="timeout" from="Map/PhaseTimer" to="Map" method="_on_phase_timer_timeout"]

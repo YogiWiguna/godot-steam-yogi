@@ -8,6 +8,9 @@ const TILES_PRIMARY_MATERIAL = "fbe786"
 const TILES_TERITARY_MATERIAL = "fec490"
 
 
+@onready var astar_map = $"../AstarMap"
+
+
 ## DEBUG UI
 @onready var _debug: Control = $Debug
 @onready var _texture_rect_debug: TextureRect = $Debug/TextureRectDebug

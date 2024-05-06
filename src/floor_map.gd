@@ -21,6 +21,7 @@ const TILES_PRIMARY = preload("res://assets/materials/tiles_primary_mat.tres")
 @onready var gui = get_node("/root/main/Map/GUI")
 
 var slot_id
+var player_controlled
 
 # For the hovering Tiles
 var is_exited = true
@@ -49,6 +50,9 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 		map.is_mouse_clicked = true
 		if map.floor_array[slot_id].occupied_by: 
 			print("OCCUPIED")
+			print(_floor_array[slot_id].occupied_by)
+			map.player_controlled = _floor_array[slot_id].occupied_by 
+			
 			map.check_tiles(slot_id)
 			map.hover_tiles(slot_id)
 			map.hilight_material_gen_neigh_array(gui.create_material("BlackMaterial",gui.BLACK_MATERIAL))

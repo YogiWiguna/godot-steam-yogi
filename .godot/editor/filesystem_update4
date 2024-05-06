@@ -1,3 +1,14 @@
 res://scenes/map.tscn
 res://scenes/spawn/boost.tscn
 res://scenes/spawn/tiles_spawn.tscn
+res://scenes/floor_map.tscn
+res://src/character.gd
+res://scenes/character.tscn
+res://src/map.gd
+res://src/floor_map.gd
+res://src/gui.gd
+res://scenes/node_tiles.tscn
+res://assets/meshes/astar_path_tiles.tres
+res://scenes/astar_grid_map.tscn
+res://scenes/astar_grid_map.gd
+res://scenes/astar_path_tiles.tscn

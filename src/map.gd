@@ -111,7 +111,7 @@ func _process(delta):
 	if !gen_neigh_array.is_empty() && is_player_try_move == true:
 		hilight_material_gen_neigh_array(gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
 		gen_neigh_array = []
-
+	
 # ---
 func set_start_and_finish_tile_material(player_number : int):
 	var tiles
@@ -358,6 +358,7 @@ func hover_tiles(clicked_id):
 		if clicked_id == floor_array[x].slot_id && floor_array[x].occupied_by != null && gui.is_menu_player_show == false && is_mouse_clicked == true:
 			gui._menu_player.show()
 			gui.is_menu_player_show = true
+			
 		elif clicked_id == floor_array[x].slot_id && gui.is_menu_player_show == true && is_mouse_clicked == true:	
 			# If generated array isn't null & menu player showing, reset it			
 			print("GENERATED NEIGH ARR : ",gen_neigh_array)
