@@ -297,9 +297,10 @@ func check_tiles(slot_id):
 		for i in check_arr:
 			if i != 0:
 				gen_neigh_array.append(i + mouse_selected)
-			#if floor_array[i].occupied_by != null:
-				#var index_occupied = gen_neigh_array.find(i)
-				#gen_neigh_array.remove_at(index_occupied)
+	for i in gen_neigh_array:
+		if floor_array[i].occupied_by != null:
+			var index_occupied = gen_neigh_array.find(i)
+			gen_neigh_array.remove_at(index_occupied)
 	#print("FILTER ARRAY AFTER :", gen_neigh_array)
 	#Utils.map_gen_neigh_array = gen_neigh_array
 	print("GEN NEIGH :", gen_neigh_array) 
