@@ -3,9 +3,10 @@ extends Node3D
 
 var all_points = {}
 var a_star = null
-@onready var grid_map = $GridMap
+@onready var grid_map = $AstarGridMap
 
 func _ready():
+	await grid_map.astar_path_tiles
 	# Astar new 
 	a_star = AStar3D.new()
 	# Returns an array of all cells with the given item index specified in item.

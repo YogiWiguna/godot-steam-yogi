@@ -26,6 +26,8 @@ var player_controlled
 # For the hovering Tiles
 var is_exited = true
 
+
+
 @onready var occupied_by
 
 
@@ -48,17 +50,30 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 		
 		print("Current slot_id : ", slot_id)
 		map.is_mouse_clicked = true
+		
 		if map.floor_array[slot_id].occupied_by: 
 			print("OCCUPIED")
 			print(_floor_array[slot_id].occupied_by)
-			map.player_controlled = _floor_array[slot_id].occupied_by 
 			
+			map.occupied_before = _floor_array[slot_id].occupied_by
+			#_floor_array[slot_id].occupied_by = null
 			map.check_tiles(slot_id)
 			map.hover_tiles(slot_id)
 			map.hilight_material_gen_neigh_array(gui.create_material("BlackMaterial",gui.BLACK_MATERIAL))
+			
+		else :
+			print("NOT OCCUPIED or TARGET")
+			print(slot_id)
+			print(map.occupied_before)
+			_floor_array[slot_id].occupied_by = map.occupied_before
+			print(_floor_array[slot_id].occupied_by)
+			map.occupied_before = null
+			#print(_floor_array[slot_id_occupied_before].occupied_by)
+			map.hover_tiles(slot_id)
 		Utils.slot_id = slot_id
 		
 		print("Floor MAP  : ", map.gen_neigh_array)
+		
 	if event.is_action_released("left_click"):
 		map.is_mouse_clicked = false
 		

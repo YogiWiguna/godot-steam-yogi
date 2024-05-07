@@ -51,8 +51,10 @@ var canera_first_rotation = false
 var _player_action = 2
 var is_mouse_clicked = false
 
-
+var occupied_before
 var sprite_texture
+
+signal player_number_active
 
 ## Player Mesh
 @onready var character_instance = preload("res://scenes/character.tscn")
@@ -67,7 +69,8 @@ func _ready():
 	player_number = 4
 	
 	default_row = 10
-	
+	player_number_active.emit()
+	print("player number ", player_number)
 	# Create 40x floor
 	for floor in range(player_number * 10):
 		set_floor()
@@ -107,10 +110,7 @@ func _process(delta):
 		#camera_first.rotation = Vector3(-80,0,0)
 	if timer_count:
 		gui._timer_label.text = "Timer : %s" % str(roundf(timer.time_left))
-		
-	if !gen_neigh_array.is_empty() && is_player_try_move == true:
-		hilight_material_gen_neigh_array(gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
-		gen_neigh_array = []
+	
 	
 # ---
 func set_start_and_finish_tile_material(player_number : int):
@@ -291,14 +291,20 @@ func check_tiles(slot_id):
 	
 	
 	#floor.gen_neigh_array = gen_neigh_array
-	print("FILTER ARRAY BEFORE :", gen_neigh_array)
+	#print("FILTER ARRAY BEFORE :", gen_neigh_array)
 	
 	if gen_neigh_array.size() == 0:
 		for i in check_arr:
 			if i != 0:
 				gen_neigh_array.append(i + mouse_selected)
-	print("FILTER ARRAY AFTER :", gen_neigh_array)
+			#if floor_array[i].occupied_by != null:
+				#var index_occupied = gen_neigh_array.find(i)
+				#gen_neigh_array.remove_at(index_occupied)
+	#print("FILTER ARRAY AFTER :", gen_neigh_array)
 	#Utils.map_gen_neigh_array = gen_neigh_array
+	print("GEN NEIGH :", gen_neigh_array) 
+	
+	
 
 # Spawn Character on top of Tiles, based on transform.position
 func spawn_character_based_on_tile_slot(slot_id):
@@ -354,33 +360,20 @@ func hover_tiles(clicked_id):
 	var _move_to = str("Move To: %s " % clicked_id)
 	var tiles_token_sprite_sprite_3d = floor_array[clicked_id].get_child(1).get_child(0)
 	
-	for x in range(floor_array.size()):
-		if clicked_id == floor_array[x].slot_id && floor_array[x].occupied_by != null && gui.is_menu_player_show == false && is_mouse_clicked == true:
-			gui._menu_player.show()
-			gui.is_menu_player_show = true
-			
-		elif clicked_id == floor_array[x].slot_id && gui.is_menu_player_show == true && is_mouse_clicked == true:	
-			# If generated array isn't null & menu player showing, reset it			
-			print("GENERATED NEIGH ARR : ",gen_neigh_array)
-			# ---
-			
-			gui._menu_player.hide()
-			gui.is_menu_player_show = false
-			# Unhover the tiles , that has been hover before
-			for floor in gen_neigh_array:
-				floor_array[floor].get_child(1).set_surface_override_material(0,gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
-				print(floor_array[floor].get_child(1).get_surface_override_material(0))
-			gen_neigh_array = []
 	
+	print("is menu player active : ", is_menu_player_active)
 	# If the ui_player_active (set true on the move_button), do with the Autoload
 	if is_menu_player_active:
 		# Check if the gen_neigh_array is not empty
 		# Check if the gen_neigh_array has slot_id
+		print("is menu player active NEIGHBOR:", gen_neigh_array)
 		# If slot_id is neighbors , Example [0,1,4,5] 
+		
 		if !gen_neigh_array.is_empty() && gen_neigh_array.has(clicked_id) :
 			# 0 is the first value in Utils.gen_neigh_array[0], others than that will go move 
 			# Check if the Utils.mouse_selected (Slot_id from ray_cast player) is not the same with click_id 
 			if gen_neigh_array[0] != clicked_id && Utils.mouse_selected != clicked_id:
+				
 				gui._move_label.text = _move_to
 				#print(Utils.move_label.text)
 				# Set the Utils.player_move to enable in physics process in player (to move player)
@@ -421,35 +414,29 @@ func hover_tiles(clicked_id):
 			
 	# Check if the gen_neigh_array in empty
 	if gen_neigh_array.is_empty():
-
-		gui._end_turn_button.disabled = false
-		gui._end_phase_button.disabled = false
-		gui._end_phase_button.visible = false
-
-		# if Utils.mouse_selected == clicked_id:
-			
-		if tiles_token_sprite_sprite_3d.texture != null:
-			gui._grab_tiles_button.disabled = false
-			gui._put_tiles_button.disabled = true
-		else : 
-			#print("PUT FALSE")
-			gui._put_tiles_button.disabled = false
-		if is_grab_button:
-			gui._grab_tiles_button.disabled = true
-		if is_put_button: 
-			gui._grab_tiles_button.disabled = true
-		
-		# Checking if the block is true
-		if clicked_id == 0 or clicked_id == 1 or clicked_id == 2 or clicked_id == 3 or clicked_id == 36 or clicked_id == 37 or clicked_id == 38 or clicked_id == 39:
-			#print("FLOOR ARRAY 0")
-			gui._grab_tiles_button.disabled = true
-			gui._put_tiles_button.disabled = true
-				
-	#else :
-		## Check if the gen_neigh_array has slot_id 
-		#if gen_neigh_array[0] == clicked_id or gen_neigh_array[0] != clicked_id:
-			#unhover_tiles(gen_neigh_array)
-			#gui._menu_player.hide()
+		pass
+	else :
+		print("ELSE")
+		for x in range(floor_array.size()):
+			if clicked_id == floor_array[x].slot_id && floor_array[x].occupied_by != null && gui.is_menu_player_show == false && is_mouse_clicked == true:
+				gui._menu_player.show()
+				gui.is_menu_player_show = true
+				is_menu_player_active = true
+				floor_array[clicked_id].occupied_by.currently_controlled = true
+				print("GENERATE NEIGH ARRAY :", gen_neigh_array)
+			elif clicked_id == floor_array[x].slot_id && gui.is_menu_player_show == true && is_mouse_clicked == true:	
+				# If generated array isn't null & menu player showing, reset it			
+				print("GENERATED NEIGH ARR : ",gen_neigh_array)
+				# ---
+				floor_array[clicked_id].occupied_by.currently_controlled = false
+				is_menu_player_active = false
+				gui._menu_player.hide()
+				gui.is_menu_player_show = false
+				# Unhover the tiles , that has been hover before
+				for floor in gen_neigh_array:
+					floor_array[floor].get_child(1).set_surface_override_material(0,gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
+					print(floor_array[floor].get_child(1).get_surface_override_material(0))
+				gen_neigh_array = []
 
 func unhover_tiles(_gen_neigh_array):
 	print("Filter Array : ", gen_neigh_array)
@@ -468,7 +455,7 @@ func unhover_tiles(_gen_neigh_array):
 # SIGNAL BUTTON 
 func _on_move_button_pressed():
 	#print("MoveButton")
-	is_menu_player_active = true
+	#is_menu_player_active = true
 	#check_tiles()
 	print("MOVE BUTTON : ", gen_neigh_array)
 	#hilight_material_gen_neigh_array(gui.create_material("BlackMaterial",gui.BLACK_MATERIAL))

@@ -2,17 +2,19 @@ extends GridMap
 
 @onready var map = get_node("/root/main/Map")
 
+signal astar_path_tiles
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.set_cell_item(Vector3(0.5, 0, 0.5),0)
-	var x = 1
-	var z = 1
-	for i in range(3):
-		self.set_cell_item(Vector3(x,0,z),0)
-		x += 1
-		z += 1
-	
+	await map.player_number_active
+	for astar_path_tiles in range(map.player_number * 10):
+		set_astar_grid_map()
+	astar_path_tiles.emit()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func set_astar_grid_map():
+	#print("set_astar_grid_map: ", default_row * player_number)
+	for x in range(map.default_row):
+		for z in range(map.player_number):
+			var pos_x = x
+			var pos_z = z
+			self.set_cell_item(Vector3(pos_x, 0, pos_z),0)

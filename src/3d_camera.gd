@@ -3,29 +3,17 @@ extends Camera3D
 const ray_length = 1000
 
 var result
+var is_character_move_to
 
 func _input(event):
-	pass
 	# Check if the input event is mouse left button 
 	# Set to token decoupled
-	#if event.is_action_pressed("left_click"):
-		## Returns a 3D position in world space
-		#var from = project_ray_origin(event.position)
-		## Returns a normal vector in world space
-		#var to = from + project_ray_normal(event.position) * ray_length
-		## Returns the current World3D resource this Node3D node is registered to
-		## Direct access to physics 3D space state
-		#var space_state = get_world_3d().direct_space_state
-		## ray_query for the physcis ray query in 3D
-		#var ray_query = PhysicsRayQueryParameters3D.new()
-		## Set the ray_query from and to
-		#ray_query.from = from
-		#ray_query.to = to
-		## Intersect ray in given space with ray_query
-		#result = space_state.intersect_ray(ray_query)
-		##print(result)
-		#if result:
-			#get_tree().call_group("units", "move_to", result.position)
+	if event.is_action_pressed("left_click"):
+		set_token_to_mouse()
+		if result:
+			print("RESULT :", result)
+			get_tree().call_group("units", "move_to", result["position"])
+			is_character_move_to = true
 
 
 func set_token_to_mouse():
