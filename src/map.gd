@@ -4,12 +4,13 @@ class_name Map
 
 # ONREADY 
 @onready var floor = preload("res://scenes/floor_map.tscn")
-@onready var Character = preload("res://scenes/character.tscn")
+
 
 
 # Dependencies
 @onready var main = get_node("/root/main")
 @onready var gui = get_node("/root/main/Map/GUI")
+@onready var character = Character.new()
 
 # Variable on Tree
 @onready var floor_map_region: Node3D = $FloorMapRegion
@@ -52,6 +53,7 @@ var _player_action = 2
 var is_mouse_clicked = false
 
 var occupied_before
+var slot_id_occupied_before
 var sprite_texture
 
 signal player_number_active
@@ -219,13 +221,13 @@ func check_tiles(slot_id):
 			match mouse_selected:
 				# First Row
 				0: 
-					var id = [0,0,0,0,0,0,4,5]
+					var id = [0,0,0,0,1,0,4,5]
 					check_arr = id
 				1,2:
-					const id = [0,0,0,0,0,3,4,5]
+					const id = [0,0,0,-1,1,3,4,5]
 					check_arr = id
 				3: 
-					const id = [0,0,0,0,0,3,4,0]
+					const id = [0,0,0,-1,0,3,4,0]
 					check_arr = id
 				# Body Row
 				4,8,12,16,20,24,28,32:
@@ -297,13 +299,14 @@ func check_tiles(slot_id):
 		for i in check_arr:
 			if i != 0:
 				gen_neigh_array.append(i + mouse_selected)
-	for i in gen_neigh_array:
-		if floor_array[i].occupied_by != null:
-			var index_occupied = gen_neigh_array.find(i)
-			gen_neigh_array.remove_at(index_occupied)
+			#if floor_array[i].occupied_by != null:
+				#var index_occupied = gen_neigh_array.find(i)
+				#gen_neigh_array.remove_at(index_occupied)
+	print("GEN NEIGH :", gen_neigh_array) 
+
+		
 	#print("FILTER ARRAY AFTER :", gen_neigh_array)
 	#Utils.map_gen_neigh_array = gen_neigh_array
-	print("GEN NEIGH :", gen_neigh_array) 
 	
 	
 
@@ -470,7 +473,8 @@ func _on_grab_tiles_button_pressed():
 	# Change the texture into the sprite path 
 	#if texture_rect.texture == null:
 		#return
-	gui._texture_rect_debug.texture = load(Utils.sprite_path_grab_from_tiles)
+	print(character.sprite_path)
+	gui._texture_rect_debug.texture = load(character.sprite_path)
 	#print(floor_array[Utils.mouse_selected].get_child(1).get_child(0))
 	# Set the tiles texture into null (because we grab it and display it into the texture_rect)
 	var sprite_texture = floor_array[Utils.mouse_selected].get_child(1).get_child(0)
@@ -485,6 +489,7 @@ func _on_grab_tiles_button_pressed():
 	is_grab_button = true
 	_player_action -= 1
 	gui._action_player_label.text = "Action Player : %s" % _player_action
+	character.currently_controlled = false
 
 func _on_put_tiles_button_pressed():
 	# GET THE CURRENT SPRITE OF THE PLAYER POSITION

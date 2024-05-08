@@ -16,6 +16,7 @@ const BLACK_MATERIAL = preload("res://assets/materials/black_mat.tres")
 #var selected_char = Character.current_char
 #@export var list_char = ["bob","masbro","gatot","oldpops"]
 
+
 var player_location
 var path = []
 var path_index = 0
@@ -25,7 +26,7 @@ var show_menu = true
 var currently_controlled : bool 
 
 var sprite_texture
-var sprite_path_grab_from_tiles
+var sprite_path
 
 func _ready():
 	animation_player.play("Idle_01")
@@ -38,6 +39,7 @@ func _physics_process(delta):
 		if raycast:
 			#Utils.mouse_selected = ray_cast_3d.get_collider().get_parent().slot_id
 			get_raycast_tiles()
+
 		#print(sprite)
 		#print(map.is_player_move)
 		if map.is_player_move && currently_controlled == true:
@@ -91,14 +93,10 @@ func get_raycast_tiles():
 	else :
 		gui._put_tiles_button.disabled = true
 	# Get the resource path of the sprite if the sprite is not null
-	var sprite_path = sprite.resource_path
+	sprite_path = sprite.resource_path
+	print(sprite_path)
+	
 	#print("RESOURCE PATH : ",sprite_path)
-	
-	#var sprite_right = sprite_path.right(11)
-	#var sprite_text = sprite_right.trim_suffix(".png")
-	
-	# Set the sprite_path into the Utils.sprite_path_grab_from_tiles
-	sprite_path_grab_from_tiles = sprite_path
 
 
 ## SIGNAL
@@ -106,6 +104,7 @@ func _on_animation_player_animation_finished(anim_name):
 	# Set the player_move to false (in physics process)
 	map.is_player_move = false
 	currently_controlled = false
+	
 	#print("Animation FINISHED")
 	
 	# Get the raycast_tiles (so we know where the player is) by slot_id

@@ -56,7 +56,7 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 			print(_floor_array[slot_id].occupied_by)
 			
 			map.occupied_before = _floor_array[slot_id].occupied_by
-			#_floor_array[slot_id].occupied_by = null
+			map.slot_id_occupied_before = slot_id
 			map.check_tiles(slot_id)
 			map.hover_tiles(slot_id)
 			map.hilight_material_gen_neigh_array(gui.create_material("BlackMaterial",gui.BLACK_MATERIAL))
@@ -67,7 +67,8 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 			print(map.occupied_before)
 			_floor_array[slot_id].occupied_by = map.occupied_before
 			print(_floor_array[slot_id].occupied_by)
-			map.occupied_before = null
+			_floor_array[map.slot_id_occupied_before].occupied_by = null
+			
 			#print(_floor_array[slot_id_occupied_before].occupied_by)
 			map.hover_tiles(slot_id)
 		Utils.slot_id = slot_id
