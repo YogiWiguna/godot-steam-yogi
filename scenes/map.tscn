@@ -25,7 +25,7 @@ script = ExtResource("6_3wm2c")
 [node name="AstarGridMap" parent="Map/AstarMap" instance=ExtResource("7_1l7cd")]
 
 [node name="Camera3D" type="Camera3D" parent="Map" groups=["Camera"]]
-transform = Transform3D(0.639055, 0.61656, -0.459851, -0.0712524, 0.642744, 0.76276, 0.765854, -0.45468, 0.45468, 0.455, 5.791, 3.83973)
+transform = Transform3D(-0.128776, 0.849185, -0.512154, 0.135723, 0.526686, 0.839155, 0.982342, 0.0385516, -0.183079, 0.455, 5.791, 1.68903)
 current = true
 script = ExtResource("3_v5rvr")
 

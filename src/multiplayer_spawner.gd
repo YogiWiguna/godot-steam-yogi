@@ -17,7 +17,7 @@ func spawnPlayer(data):
 	p.set_multiplayer_authority(data)
 	players[data] = p
 	return p
-	print(players)
+	#print(players)
 
 func removePlayer(data):
 	players[data].queue_free()

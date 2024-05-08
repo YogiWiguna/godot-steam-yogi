@@ -24,7 +24,7 @@ const move_speed = 5
 var raycast = true
 var show_menu = true
 var currently_controlled : bool 
-
+var current_slot_id
 var sprite_texture
 var sprite_path
 
@@ -44,7 +44,7 @@ func _physics_process(delta):
 		#print(map.is_player_move)
 		if map.is_player_move && currently_controlled == true:
 			## FOR SET THE MAXIMUM move_vec
-			#print("PLAYER MOVE")
+			print("PLAYER MOVE")
 			raycast = false
 			#if Utils.sprite_texture != null:
 				#Utils.grab_tiles_button.disabled = false
@@ -77,8 +77,8 @@ func move_to(target_pos):
 func get_raycast_tiles():
 	#var grid = ray_cast_3d.get_collider().get_parent()
 	#print("GRID : ", grid)
-	# Get the slot_id from the ray_cast and Set it into the Utils.mouse_selected
-	Utils.mouse_selected = ray_cast_3d.get_collider().get_parent().slot_id
+	# Get the slot_id from the ray_cast and Set it into the current_slot_id
+	current_slot_id = ray_cast_3d.get_collider().get_parent().slot_id
 	#print("MOUSE SELECTED : ",Utils.mouse_selected)
 	# Get the tiles from the raycast and Set it into the variable tiles
 	var tiles = ray_cast_3d.get_collider().get_parent().get_child(1)
@@ -94,7 +94,7 @@ func get_raycast_tiles():
 		gui._put_tiles_button.disabled = true
 	# Get the resource path of the sprite if the sprite is not null
 	sprite_path = sprite.resource_path
-	print(sprite_path)
+	#print(sprite_path)
 	
 	#print("RESOURCE PATH : ",sprite_path)
 

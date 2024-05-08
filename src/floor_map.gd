@@ -52,28 +52,34 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 		map.is_mouse_clicked = true
 		
 		if map.floor_array[slot_id].occupied_by: 
-			print("OCCUPIED")
-			print(_floor_array[slot_id].occupied_by)
-			
-			map.occupied_before = _floor_array[slot_id].occupied_by
-			map.slot_id_occupied_before = slot_id
 			map.check_tiles(slot_id)
 			map.hover_tiles(slot_id)
-			map.hilight_material_gen_neigh_array(gui.create_material("BlackMaterial",gui.BLACK_MATERIAL))
+			if map.floor_array[slot_id].occupied_by.currently_controlled:
+				print("OCCUPIED")
+				print(_floor_array[slot_id].occupied_by)
+				map.occupied_before = _floor_array[slot_id].occupied_by
+				map.slot_id_occupied_before = slot_id
+				
+				
+				map.hilight_material_gen_neigh_array(gui.create_material("BlackMaterial",gui.BLACK_MATERIAL))
 			
 		else :
+			#if map.floor_array[slot_id].occupied_by
 			print("NOT OCCUPIED or TARGET")
-			print(slot_id)
-			print(map.occupied_before)
+			print("Floor MAP  : ", map.gen_neigh_array)
+			if map.gen_neigh_array.is_empty():
+				return
+			print("OCUUPIED FLOOR CHANGE")
+			# Set the occupied to the next target floor
 			_floor_array[slot_id].occupied_by = map.occupied_before
-			print(_floor_array[slot_id].occupied_by)
+			# Set the from (player floor before move position) floor to null 
 			_floor_array[map.slot_id_occupied_before].occupied_by = null
 			
 			#print(_floor_array[slot_id_occupied_before].occupied_by)
 			map.hover_tiles(slot_id)
 		Utils.slot_id = slot_id
-		
-		print("Floor MAP  : ", map.gen_neigh_array)
+		#
+		#print("Floor MAP  : ", map.gen_neigh_array)
 		
 	if event.is_action_released("left_click"):
 		map.is_mouse_clicked = false

@@ -9,3 +9,6 @@ res://scenes/astar_path_tiles.tscn
 res://src/map.gd
 res://src/character.gd
 res://src/floor_map.gd
+res://src/3d_camera.gd
+res://src/astar_map.gd
+res://src/multiplayer_spawner.gd

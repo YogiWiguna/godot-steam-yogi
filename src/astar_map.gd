@@ -45,7 +45,7 @@ func _ready():
 						if !a_star.are_points_connected(ind1,ind2):
 							# Connect the points
 							a_star.connect_points(ind1,ind2,true)
-	print("Connected : ",a_star.get_point_count())
+	#print("Connected : ",a_star.get_point_count())
 
 ## Return the string Vector 3 (for checking the array)
 func v3_to_index(v3):

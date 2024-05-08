@@ -11,7 +11,7 @@ func _input(event):
 	if event.is_action_pressed("left_click"):
 		set_token_to_mouse()
 		if result:
-			print("RESULT :", result)
+			#print("RESULT :", result)
 			get_tree().call_group("units", "move_to", result["position"])
 			is_character_move_to = true
 
