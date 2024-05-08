@@ -28,9 +28,11 @@ var current_slot_id
 var sprite_texture
 var sprite_path
 
+signal sprite_path_ready
+
 func _ready():
 	animation_player.play("Idle_01")
-	add_to_group("units")
+	add_to_group("character")
 
 func _physics_process(delta):
 	if path_index < path.size():
@@ -44,7 +46,7 @@ func _physics_process(delta):
 		#print(map.is_player_move)
 		if map.is_player_move && currently_controlled == true:
 			## FOR SET THE MAXIMUM move_vec
-			print("PLAYER MOVE")
+			#print("PLAYER MOVE")
 			raycast = false
 			#if Utils.sprite_texture != null:
 				#Utils.grab_tiles_button.disabled = false
@@ -75,40 +77,37 @@ func move_to(target_pos):
 	
 
 func get_raycast_tiles():
-	#var grid = ray_cast_3d.get_collider().get_parent()
-	#print("GRID : ", grid)
-	# Get the slot_id from the ray_cast and Set it into the current_slot_id
-	current_slot_id = ray_cast_3d.get_collider().get_parent().slot_id
-	#print("MOUSE SELECTED : ",Utils.mouse_selected)
-	# Get the tiles from the raycast and Set it into the variable tiles
-	var tiles = ray_cast_3d.get_collider().get_parent().get_child(1)
-	# Get the texture of the sprite in tiles and Set it into the variable sprite
-	var sprite = tiles.get_child(0).texture
-	#print("SPRITE : ",sprite)
-	# Set the sprite into the Utils.sprite_texture 
-	sprite_texture = sprite
-	# Check if the sprite is null
-	if sprite == null : 
-		return
-	else :
-		gui._put_tiles_button.disabled = true
-	# Get the resource path of the sprite if the sprite is not null
-	sprite_path = sprite.resource_path
-	#print(sprite_path)
-	
-	#print("RESOURCE PATH : ",sprite_path)
+	if currently_controlled:
+		# Get the slot_id from the ray_cast and Set it into the current_slot_id
+		current_slot_id = ray_cast_3d.get_collider().get_parent().slot_id
+		map.character_current_slot_id = current_slot_id
+		#print("Character current slot_id : ",current_slot_id)
+		#print("MOUSE SELECTED : ",Utils.mouse_selected)
+		# Get the tiles from the raycast and Set it into the variable tiles
+		var tiles = ray_cast_3d.get_collider().get_parent().get_child(1)
+		# Get the texture of the sprite in tiles and Set it into the variable sprite
+		var sprite = tiles.get_child(0).texture
+		map.character_floor_sprite = sprite
+		#print("SPRITE : ",sprite)
+		# Check if the sprite is null
+		if sprite == null : 
+			return
+		else :
+			gui._put_tiles_button.disabled = true
+		# Get the resource path of the sprite if the sprite is not null
+		sprite_path = sprite.resource_path
+		map.character_floor_sprite_path = sprite_path
+		#print("RESOURCE PATH : ",sprite_path)
 
 
 ## SIGNAL
 func _on_animation_player_animation_finished(anim_name):
+	#print("Animation FINISHED")
+	# Get the raycast_tiles (so we know where the player is) by slot_id
+	get_raycast_tiles()
 	# Set the player_move to false (in physics process)
 	map.is_player_move = false
 	currently_controlled = false
-	
-	#print("Animation FINISHED")
-	
-	# Get the raycast_tiles (so we know where the player is) by slot_id
-	get_raycast_tiles()
 	# Change animation to idle right after the running animation is done
 	_on_animation_player_animation_changed("Running","Idle_01")
 

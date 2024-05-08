@@ -1,6 +1,8 @@
 extends CanvasLayer
 class_name GUI
 
+@onready var map = get_node("/root/main/Map")
+
 ## MATERIAL
 const BLACK_MATERIAL = "000000"
 const RED_MATERIAL = "ef0000"
@@ -31,7 +33,6 @@ const TILES_TERITARY_MATERIAL = "fec490"
 
 ## Menu Player UI
 @onready var _menu_player: VBoxContainer = $MenuPlayer
-@export var is_menu_player_show = false
 @onready var _move_button: Button = $MenuPlayer/MoveButton
 @onready var _grab_tiles_button: Button = $MenuPlayer/GrabTilesButton
 @onready var _put_tiles_button: Button = $MenuPlayer/PutTilesButton
@@ -89,3 +90,11 @@ static func create_material(name: String, color, texture=null, shaded_mode=0):
 	material.albedo_texture = texture
 	#material.shading_mode = shaded_mode
 	return material
+
+func _input(event):
+	if map.is_menu_player_show:
+		_menu_player.show()
+	else :
+		_menu_player.hide()
+	
+	

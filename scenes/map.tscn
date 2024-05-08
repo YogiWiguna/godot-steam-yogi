@@ -149,6 +149,7 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="MoveButton" type="Button" parent="Map/GUI/MenuPlayer"]
+visible = false
 layout_mode = 2
 text = "Move"
 

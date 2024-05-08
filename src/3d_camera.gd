@@ -12,7 +12,7 @@ func _input(event):
 		set_token_to_mouse()
 		if result:
 			#print("RESULT :", result)
-			get_tree().call_group("units", "move_to", result["position"])
+			get_tree().call_group("character", "move_to", result["position"])
 			is_character_move_to = true
 
 
