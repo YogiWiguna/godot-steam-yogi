@@ -8,3 +8,7 @@ res://scenes/astar_grid_map.tscn
 res://scenes/astar_path_tiles.tscn
 res://src/map.gd
 res://src/floor_map.gd
+res://src/gui.gd
+res://src/obstacle.gd
+res://src/character.gd
+res://src/utils.gd

@@ -4,65 +4,11 @@ class_name Map
 
 # ONREADY 
 @onready var floor = preload("res://scenes/floor_map.tscn")
-
-
+@onready var tile = preload("res://scenes/tile.tscn")
 
 # Dependencies
 @onready var main = get_node("/root/main")
 @onready var gui = get_node("/root/main/Map/GUI")
-@onready var character = Character.new()
-
-# Variable on Tree
-@onready var floor_map_region: Node3D = $FloorMapRegion
-@onready var timer: Timer = $Timer
-@onready var phase_timer: Timer = $PhaseTimer
-
-# VAR 
-@onready var player_number : int
-@onready var default_row : int
-var target_tile_vector_z = []
-var target_tile_vector_x = []
-@onready var tile = preload("res://scenes/tile.tscn")
-# Floor
-var floor_array := []
-var floor_array_slot_id := []
-var slot_array := []
-var floor_instantiated
-var gen_neigh_array := []
-var random_tiles_on_floors := []
-
-
-var timer_count = false
-var menu_player_active = false
-var is_player_try_move = false
-
-var is_phase_two = false
-var is_phase_two_second = false
-var is_block_ui = true
-var is_boost_ui = true
-var is_spawn_ui = true
-var is_stack_ui = true
-var is_player_move = false
-var is_menu_player_active = false
-var is_grab_button = false
-var is_put_button = false
-var is_block_active = false
-var is_boost_active = false
-var canera_first_rotation = false
-var _player_action = 2
-var is_mouse_clicked = false
-
-var occupied_before
-var slot_id_occupied_before
-var sprite_texture
-
-var is_menu_player_show = false
-
-var character_floor_sprite
-var character_floor_sprite_path
-var character_current_slot_id
-
-signal player_number_active
 
 ## Player Mesh
 @onready var character_instance = preload("res://scenes/character.tscn")
@@ -71,6 +17,43 @@ signal player_number_active
 @onready var masbro_mat = preload("res://assets/materials/masbro_mat.tres")
 @onready var gatot_mat = preload("res://assets/materials/gatot_mat.tres")
 @onready var oldpops_mat = preload("res://assets/materials/oldpop_mat.tres")
+
+# VAR 
+@onready var player_number : int
+@onready var default_row : int
+var target_tile_vector_z = []
+var target_tile_vector_x = []
+
+# Floor
+var floor_array := []
+var floor_array_slot_id := []
+var slot_array := []
+var floor_instantiated
+var gen_neigh_array := []
+var random_tiles_on_floors := []
+
+# Variable for map(self)
+var is_menu_player_active = false
+
+# Variable for floor_map.gd
+var occupied_before
+var slot_id_occupied_before
+
+# variable for player or character
+var character_floor_sprite
+var character_floor_sprite_path
+var character_current_slot_id
+var is_player_move = false
+
+# Variable for gui
+var is_mouse_clicked = false
+var is_menu_player_show = false
+var _player_action = 2
+
+# Signal for a_star_map.gd (waiting the player_number exist)
+signal player_number_active
+
+
 
 func _ready():
 	#DebugMenu.style = DebugMenu.Style.VISIBLE_DETAILED
@@ -91,35 +74,16 @@ func _ready():
 	
 	set_sprite_to_tiles(player_number)
 	
-	set_slot_id()
+	#set_slot_id()
 	
 	for x in range(player_number):
 		spawn_character_based_on_tile_slot(x)
 	
 	set_start_and_finish_tile_material(player_number)
 	
-	# Change Mat correspond to player
-	
-	#print(get_tree().get_nodes_in_group("character"))
-	
-	gui._menu_player.hide()
-	
-	sprite_texture = null
-	
-	gui._action_player_label.text = "Action Player : %s" % _player_action
-	
 	# Setup Player Materials
 	match_character_mats()
 
-func _process(delta):
-	
-	#if canera_first_rotation:
-		##print("CAMERA ROTATION")
-		#camera_first.rotation = Vector3(-80,0,0)
-	if timer_count:
-		gui._timer_label.text = "Timer : %s" % str(roundf(timer.time_left))
-	
-	
 # ---
 func set_start_and_finish_tile_material(player_number : int):
 	var tiles
@@ -146,16 +110,14 @@ func set_start_and_finish_tile_material(player_number : int):
 					tiles.set_surface_override_material(0,null)
 #
 func set_floor():
-	
-	floor_map_region.position = Vector3(0.5, 0, 0.5)
+	gui.floor_map_region.position = Vector3(0.5, 0, 0.5)
 	# Instantiated floor_map
 	floor_instantiated = floor.instantiate()
 	# Slot_id 
 	floor_instantiated.slot_id = floor_array.size()
 	floor_array_slot_id.append(floor_instantiated.slot_id)
 	floor_array.push_back(floor_instantiated)
-	floor_map_region.add_child(floor_instantiated, true)
-	
+	gui.floor_map_region.add_child(floor_instantiated, true)
 #
 func generate_tile_coord(row, column):
 	for x in range(row):
@@ -204,14 +166,13 @@ func set_sprite_to_tiles(player_number):
 		if key.slot_id in range(size_min, size):
 			sprite.texture = null
 # 
-func set_slot_id():
-	var id = 0
-	
-	for slot in range(floor_array.size()):
-		var slot_id = floor_array[slot].slot_id
-		slot_array.append(slot_id)
-
-
+#func set_slot_id():
+	#var id = 0
+	#
+	#for slot in range(floor_array.size()):
+		#var slot_id = floor_array[slot].slot_id
+		#slot_array.append(slot_id)
+#
 func hilight_material_gen_neigh_array(material):
 	for i in range(gen_neigh_array.size()):
 		#Set the Tiles surface material on each Tiles based on the "j" variable into Black material
@@ -220,7 +181,6 @@ func hilight_material_gen_neigh_array(material):
 		hover_show.set_surface_override_material(0,material)
 #
 func check_tiles(slot_id):
-	#print("FLOOR SLOT ID: ", Utils.slot_id)
 	# Set the slot_id into the mouse_selected
 	var mouse_selected = slot_id
 	#print("Mouse selected :",mouse_selected)
@@ -363,16 +323,10 @@ func match_character_mats():
 			"oldpops":
 				key_mat.set_surface_override_material(0, oldpops_mat)
 #
-func menu_player_disabled(status : bool):
-	gui._move_button.disabled = status
-	gui._grab_tiles_button.disabled = status
-	gui._put_tiles_button.disabled = status
-	gui._end_phase_button.disabled = status
-	gui._end_turn_button.disabled = status
+
 
 func hover_tiles(clicked_id):
-
-	# If the ui_player_active (set true on the move_button), do with the Autoload
+	# For player moving
 	if is_menu_player_active:
 		# Check if the gen_neigh_array is not empty
 		# Check if the gen_neigh_array has slot_id
@@ -383,8 +337,9 @@ func hover_tiles(clicked_id):
 			#print(Utils.move_label.text)
 			is_player_move = true
 			_player_action -= 1
-			for floor in gen_neigh_array:
-				floor_array[floor].get_child(1).set_surface_override_material(0,gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
+			
+			#for floor in gen_neigh_array:
+				#floor_array[floor].get_child(1).set_surface_override_material(0,gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
 			# Unhover the tiles if slot_id is the first value in Utils.gen_neigh_array[0]
 			unhover_tiles(gen_neigh_array)
 			
@@ -392,8 +347,10 @@ func hover_tiles(clicked_id):
 			is_menu_player_active = false
 			return
 	
+	# Checking if gen_neigh_array is empty
 	if gen_neigh_array.is_empty():
 		pass
+	# Checking if gen_neigh_array is not empty
 	else :
 		print("ELSE")
 		for x in range(floor_array.size()):
@@ -413,141 +370,15 @@ func hover_tiles(clicked_id):
 				is_menu_player_active = false
 				floor_array[clicked_id].occupied_by.currently_controlled = false
 				# Unhover the tiles , that has been hover before
-				for floor in gen_neigh_array:
-					floor_array[floor].get_child(1).set_surface_override_material(0,gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
+				unhover_tiles(gen_neigh_array)
 				gen_neigh_array = []
 
 func unhover_tiles(_gen_neigh_array):
-	print("Filter Array : ", gen_neigh_array)
-	for x in range(floor_array.size()):
-		var xtm = floor_array[x].get_child(1)
-		set_start_and_finish_tile_material(player_number)
+	print("Filter Array : ", _gen_neigh_array)
+	for floor in _gen_neigh_array:
+		floor_array[floor].get_child(1).set_surface_override_material(0,gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
+		#set_start_and_finish_tile_material(player_number)
 	# Set the Utils.filtter_arrray into null
 	gen_neigh_array = []
 
 
-# SIGNAL BUTTON 
-func _on_grab_tiles_button_pressed():
-	## TAKE THE SPRITE FROM THE PLAYER CURRENT TILES
-	#if texture_rect.texture == null:
-		#return
-	# Load the texture from the current position of the player 
-	# Change the texture into the sprite path 
-	gui._texture_rect_debug.texture = load(character_floor_sprite_path)
-	#print(floor_array[Utils.mouse_selected].get_child(1).get_child(0))
-	# Set the tiles texture into null (because we grab it and display it into the texture_rect)
-	sprite_texture = floor_array[character_current_slot_id].get_child(1).get_child(0)
-	sprite_texture.texture = null
-	#print("Setelah : ", sprite_texture)
-	character.currently_controlled = false
-
-func _on_put_tiles_button_pressed():
-	# GET THE CURRENT SPRITE OF THE PLAYER POSITION
-	#var current_tiles_sprite_3d = floor_array[character_current_slot_id].get_child(1).get_child(0)
-	# GET the texture of the texture rect 
-	var texture_spawn = gui._texture_rect_debug.texture
-
-	# Check if the sprite_texture is null, set the texture_spawn to sprite_texture
-	if sprite_texture.texture == null:
-		sprite_texture.texture = texture_spawn
-
-	character.currently_controlled = false
-
-func _on_end_phase_button_pressed():
-	#print("END PHASE")
-	
-	## START THE TIMER AFTER PRESS THE END TURN 
-	phase_timer.start()
-	#print("TIMER",timer)
-	gui._phase_label.text = "Main Phase 2"
-	gui._phase_label.visible = true
-	# Disabled the children of the menu player
-	menu_player_disabled(true)
-	gui._end_phase_button.visible = false
-
-func _on_end_turn_button_pressed():
-	#path_follow_3d.set_progress(0)
-	#path_follow_3d.rotation_degrees = Vector3(0,0,0)
-	#camera_first.rotation_degrees = Vector3(0,0,0)
-	## START THE TIMER AFTER PRESS THE END TURN 
-	timer.wait_time = 5
-	timer.start()
-	
-	#print("TIMER",timer)
-	#gui._timer_label.text = "Timer : %s" % str(roundf(timer.time_left))
-	timer_count = true
-	
-	# Disabled the children of the menu player
-	menu_player_disabled(false)
-	
-	if is_phase_two_second:
-		is_phase_two = true
-
-func _on_timer_timeout():
-	#print("TIMER STOP")
-	gui._phase_label.visible = false
-	if is_phase_two_second:
-		is_phase_two = true
-	timer_count = false
-	gui._menu_player.visible = false
-	# Enable the men_player after the time is done 
-	#menu_player_disabled(false)
-	#print("TIMER Mouse selected : ", Utils.mouse_selected)
-	#print("TIMER Sprite Texture : ", Utils.sprite_texture)
-	#if Utils.sprite_texture == null :
-		#grab_tiles_button.disabled = true
-	
-	_player_action = 2
-	gui._action_player_label.text = "Action Player : %s" % _player_action
-
-func _on_phase_two_button_pressed():
-	#end_phase_button.visible = true
-	is_phase_two = true
-
-func _on_random_tiles_pressed():
-	set_random_id_for_tile()
-	set_sprite_to_tiles(player_number)
-
-func _on_phase_timer_timeout():
-	gui._phase_label.visible = false
-	gui._move_button.disabled = false
-	is_phase_two = false
-	gui._menu_player.visible = false
-	
-	_player_action = 2
-	gui._action_player_label.text = "Action Player : %s" % _player_action
-	#menu_player_disabled(false)
-
-func _on_block_spawn_button_pressed():
-	if is_block_ui:
-		gui._block.visible = true
-		#print("true")
-		is_block_ui = false
-	else:
-		gui._block.visible = false
-		#print("false")
-		is_block_ui = true
-
-func _on_boost_spawn_button_pressed():
-	if is_boost_ui:
-		gui._boost.visible = true
-		is_boost_ui = false
-	else:
-		gui._boost.visible = false
-		is_boost_ui = true
-
-func _on_tiles_spawn_button_pressed():
-	if is_spawn_ui:
-		gui._tiles_spawn.visible = true
-		is_spawn_ui = false
-	else: 
-		gui._tiles_spawn.visible = false
-		is_spawn_ui = true
-
-func _on_stack_spawn_button_2_pressed():
-	if is_stack_ui:
-		gui._stack.visible = true
-		is_stack_ui = false
-	else: 
-		gui._stack.visible = false
-		is_stack_ui = true

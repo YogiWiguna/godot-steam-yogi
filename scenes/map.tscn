@@ -16,6 +16,9 @@ reflected_light_source = 2
 [node name="Map" type="Node3D" parent="."]
 script = ExtResource("1_4awjs")
 
+[node name="FloorMapRegion" type="Node3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
 [node name="Obstacle" type="Node3D" parent="Map"]
 script = ExtResource("5_oq7qu")
 
@@ -34,9 +37,6 @@ transform = Transform3D(0.698596, 0.385695, -0.602663, -0.0163334, 0.850654, 0.5
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Map"]
 environment = SubResource("Environment_2meu0")
-
-[node name="FloorMapRegion" type="Node3D" parent="Map"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="Timer" type="Timer" parent="Map"]
 process_callback = 0
@@ -148,11 +148,6 @@ offset_bottom = -56.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="MoveButton" type="Button" parent="Map/GUI/MenuPlayer"]
-visible = false
-layout_mode = 2
-text = "Move"
-
 [node name="GrabTilesButton" type="Button" parent="Map/GUI/MenuPlayer"]
 layout_mode = 2
 text = "Grab Tiles"
@@ -160,6 +155,10 @@ text = "Grab Tiles"
 [node name="PutTilesButton" type="Button" parent="Map/GUI/MenuPlayer"]
 layout_mode = 2
 text = "Put Tiles"
+
+[node name="SpawnTilesButton" type="Button" parent="Map/GUI/MenuPlayer"]
+layout_mode = 2
+text = "Spawn Tiles"
 
 [node name="EndPhaseButton" type="Button" parent="Map/GUI/MenuPlayer"]
 visible = false
@@ -456,27 +455,27 @@ expand_mode = 2
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="Map"]
 script = ExtResource("8_rj8du")
 
-[connection signal="timeout" from="Map/Timer" to="Map" method="_on_timer_timeout"]
-[connection signal="timeout" from="Map/PhaseTimer" to="Map" method="_on_phase_timer_timeout"]
-[connection signal="pressed" from="Map/GUI/Debug/DebugContainer/RandomTilesButton" to="Map" method="_on_random_tiles_pressed"]
-[connection signal="pressed" from="Map/GUI/Debug/DebugContainer/PhaseTwoButton" to="Map" method="_on_phase_two_button_pressed"]
-[connection signal="pressed" from="Map/GUI/ObstacleSpawnner/BlockSpawnButton" to="Map" method="_on_block_spawn_button_pressed"]
-[connection signal="pressed" from="Map/GUI/ObstacleSpawnner/BoostSpawnButton" to="Map" method="_on_boost_spawn_button_pressed"]
-[connection signal="pressed" from="Map/GUI/ObstacleSpawnner/TilesSpawnButton" to="Map" method="_on_tiles_spawn_button_pressed"]
-[connection signal="pressed" from="Map/GUI/ObstacleSpawnner/StackSpawnButton" to="Map" method="_on_stack_spawn_button_2_pressed"]
-[connection signal="pressed" from="Map/GUI/MenuPlayer/MoveButton" to="Map" method="_on_move_button_pressed"]
-[connection signal="pressed" from="Map/GUI/MenuPlayer/GrabTilesButton" to="Map" method="_on_grab_tiles_button_pressed"]
-[connection signal="pressed" from="Map/GUI/MenuPlayer/PutTilesButton" to="Map" method="_on_put_tiles_button_pressed"]
-[connection signal="pressed" from="Map/GUI/MenuPlayer/EndPhaseButton" to="Map" method="_on_end_phase_button_pressed"]
-[connection signal="pressed" from="Map/GUI/MenuPlayer/EndTurnButton" to="Map" method="_on_end_turn_button_pressed"]
-[connection signal="pressed" from="Map/GUI/Block/BlockHorizontalButton" to="Map/Obstacle" method="_on_block_horizontal_button_pressed"]
-[connection signal="pressed" from="Map/GUI/Block/BlockVerticalButton" to="Map/Obstacle" method="_on_block_vertical_button_pressed"]
-[connection signal="pressed" from="Map/GUI/Boost/BoostUpButton" to="Map/Obstacle" method="_on_boost_up_button_pressed"]
-[connection signal="pressed" from="Map/GUI/Boost/BoostDownButton" to="Map/Obstacle" method="_on_boost_down_button_pressed"]
-[connection signal="pressed" from="Map/GUI/Boost/BoostLeftButton" to="Map/Obstacle" method="_on_boost_left_button_pressed"]
-[connection signal="pressed" from="Map/GUI/Boost/BoostRightButton" to="Map/Obstacle" method="_on_boost_right_button_pressed"]
-[connection signal="pressed" from="Map/GUI/TilesSpawn/TilesSpawnCoinButton" to="Map/Obstacle" method="_on_tiles_spawn_coin_button_pressed"]
-[connection signal="pressed" from="Map/GUI/TilesSpawn/TilesSpawnHeartButton" to="Map/Obstacle" method="_on_tiles_spawn_heart_button_pressed"]
-[connection signal="pressed" from="Map/GUI/TilesSpawn/TilesSpawnDiamondButton" to="Map/Obstacle" method="_on_tiles_spawn_diamond_button_pressed"]
-[connection signal="pressed" from="Map/GUI/TilesSpawn/TilesSpawnStarButton" to="Map/Obstacle" method="_on_tiles_spawn_star_button_pressed"]
-[connection signal="pressed" from="Map/GUI/Stack/StackButton" to="Map/Obstacle" method="_on_stack_button_pressed"]
+[connection signal="timeout" from="Map/Timer" to="Map/GUI" method="_on_timer_timeout"]
+[connection signal="timeout" from="Map/PhaseTimer" to="Map/GUI" method="_on_phase_timer_timeout"]
+[connection signal="pressed" from="Map/GUI/Debug/DebugContainer/RandomTilesButton" to="Map/GUI" method="_on_random_tiles_button_pressed"]
+[connection signal="pressed" from="Map/GUI/Debug/DebugContainer/PhaseTwoButton" to="Map/GUI" method="_on_phase_two_button_pressed"]
+[connection signal="pressed" from="Map/GUI/ObstacleSpawnner/BlockSpawnButton" to="Map/GUI" method="_on_block_spawn_button_pressed"]
+[connection signal="pressed" from="Map/GUI/ObstacleSpawnner/BoostSpawnButton" to="Map/GUI" method="_on_boost_spawn_button_pressed"]
+[connection signal="pressed" from="Map/GUI/ObstacleSpawnner/TilesSpawnButton" to="Map/GUI" method="_on_tiles_spawn_button_pressed"]
+[connection signal="pressed" from="Map/GUI/ObstacleSpawnner/StackSpawnButton" to="Map/GUI" method="_on_stack_spawn_button_pressed"]
+[connection signal="pressed" from="Map/GUI/MenuPlayer/GrabTilesButton" to="Map/GUI" method="_on_grab_tiles_button_pressed"]
+[connection signal="pressed" from="Map/GUI/MenuPlayer/PutTilesButton" to="Map/GUI" method="_on_put_tiles_button_pressed"]
+[connection signal="pressed" from="Map/GUI/MenuPlayer/SpawnTilesButton" to="Map/GUI" method="_on_spawn_tiles_button_pressed"]
+[connection signal="pressed" from="Map/GUI/MenuPlayer/EndPhaseButton" to="Map/GUI" method="_on_end_phase_button_pressed"]
+[connection signal="pressed" from="Map/GUI/MenuPlayer/EndTurnButton" to="Map/GUI" method="_on_end_turn_button_pressed"]
+[connection signal="pressed" from="Map/GUI/Block/BlockHorizontalButton" to="Map/GUI" method="_on_block_horizontal_button_pressed"]
+[connection signal="pressed" from="Map/GUI/Block/BlockVerticalButton" to="Map/GUI" method="_on_block_vertical_button_pressed"]
+[connection signal="pressed" from="Map/GUI/Boost/BoostUpButton" to="Map/GUI" method="_on_boost_up_button_pressed"]
+[connection signal="pressed" from="Map/GUI/Boost/BoostDownButton" to="Map/GUI" method="_on_boost_down_button_pressed"]
+[connection signal="pressed" from="Map/GUI/Boost/BoostLeftButton" to="Map/GUI" method="_on_boost_left_button_pressed"]
+[connection signal="pressed" from="Map/GUI/Boost/BoostRightButton" to="Map/GUI" method="_on_boost_right_button_pressed"]
+[connection signal="pressed" from="Map/GUI/TilesSpawn/TilesSpawnCoinButton" to="Map/GUI" method="_on_tiles_spawn_coin_button_pressed"]
+[connection signal="pressed" from="Map/GUI/TilesSpawn/TilesSpawnHeartButton" to="Map/GUI" method="_on_tiles_spawn_heart_button_pressed"]
+[connection signal="pressed" from="Map/GUI/TilesSpawn/TilesSpawnDiamondButton" to="Map/GUI" method="_on_tiles_spawn_diamond_button_pressed"]
+[connection signal="pressed" from="Map/GUI/TilesSpawn/TilesSpawnStarButton" to="Map/GUI" method="_on_tiles_spawn_star_button_pressed"]
+[connection signal="pressed" from="Map/GUI/Stack/StackButton" to="Map/GUI" method="_on_stack_button_pressed"]

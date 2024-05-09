@@ -2,12 +2,6 @@ extends Node
 
 
 @onready var map = preload("res://scenes/map.tscn")
-
-const tiles_primary_mat = preload("res://assets/materials/tiles_primary_mat.tres")
-const black_mat = preload("res://assets/materials/black_mat.tres")
-const red_mat = preload("res://assets/materials/red_mat.tres")
-
-var map_gen_neigh_array := []
 # Utils | Global Autoload
 
 enum player { ONE, TWO, THREE, FOUR }
@@ -35,19 +29,7 @@ static func get_player_color(_player):
 		1: return Color.PURPLE
 		2: return Color.DARK_RED
 		3: return Color.DARK_BLUE
-# Player Resource
-# 
-var slot_id
-var mouse_selected
 
-
-## DEBUG
-var move_label
-var sprite_path_grab_from_tiles
-var sprite_null = false
-var player_action = 2
-
-var player_pos
 
 func check_player_availability_on_floor():
 	var occupied_by
@@ -55,8 +37,6 @@ func check_player_availability_on_floor():
 		var tiles = map.floor_instantiated[x]
 		occupied_by = tiles.occupied_by
 	return occupied_by
-
-
 
 func generate_table(row_num : int , column_num : int) -> Array:
 	var rows = []

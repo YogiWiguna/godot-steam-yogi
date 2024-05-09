@@ -10,6 +10,7 @@ const TILES_SPAWN = preload("res://scenes/spawn/tiles_spawn.tscn")
 
 
 # BOOST
+var is_boost_ui = true
 var is_boost = false
 var is_boost_up_pressed = false
 var is_boost_down_pressed = false
@@ -25,6 +26,7 @@ var boost_left_count = 1
 var boost_right_count = 1
 
 # BLOCK
+var is_block_ui = true
 var is_block = false
 var is_obstacle_block_horizontal = false
 var is_obstacle_block_vertical = false
@@ -38,6 +40,7 @@ var block_horizontal_count = 2
 var block_vertical_count = 2
 
 # TILES SPAWN
+var is_tiles_spawn_ui = true
 var is_tiles_spawn = false
 var is_tiles_spawn_coin = false
 var is_tiles_spawn_heart = false
@@ -53,6 +56,7 @@ var tiles_spawn_star_count = 1
 var tiles_spawn_heart_count = 1
 
 # STACK
+var is_stack_ui = true
 var is_stack = false
 var stack_id_array = []
 var stack_count = 4
@@ -744,8 +748,6 @@ func stack_spawn():
 			return
 	array_for_checking_tiles(stack_array)
 
-	#print(stack_array)
-	#print(grid.position)
 	if !camera.result.is_empty():
 		if grid_id in stack_array:
 			stack_id_array.append(grid_id)
@@ -759,104 +761,3 @@ func stack_spawn():
 				gui._stack_button.hide()
 				gui._stack_label.hide()
 
-## SIGNAL
-func _on_block_horizontal_button_pressed():
-	print("BLOCK HORIZONTAL")
-	is_obstacle_block_horizontal = true
-	is_block = true
-	
-	var spawn_block_array = []
-	array_for_checking_tiles(spawn_block_array)
-
-func _on_block_vertical_button_pressed():
-	print("BLOCK VERTICAL")
-	is_obstacle_block_vertical = true
-	is_block = true
-	
-	var spawn_block_array = []
-	array_for_checking_tiles(spawn_block_array)
-
-
-func _on_boost_up_button_pressed():
-	print("BOOST UP")
-	is_boost_up_pressed = true
-	is_boost = true
-	
-	var boost_array = []
-	array_for_checking_tiles(boost_array)
-	boost_array = boost_array
-
-func _on_boost_down_button_pressed():
-	print("BOOST DOWN")
-	is_boost_down_pressed = true
-	is_boost = true
-	
-	var boost_array = []
-	array_for_checking_tiles(boost_array)
-	boost_array = boost_array
-
-func _on_boost_left_button_pressed():
-	print("BOOST LEFT")
-	is_boost_left_pressed = true
-	is_boost = true
-	
-	var boost_array = []
-	array_for_checking_tiles(boost_array)
-	boost_array = boost_array
-
-
-func _on_boost_right_button_pressed():
-	print("BOOST RIGHT")
-	is_boost_right_pressed = true
-	is_boost = true
-	
-	var boost_array = []
-	array_for_checking_tiles(boost_array)
-	boost_array = boost_array
-
-func _on_tiles_spawn_coin_button_pressed():
-	print("TILES SPAWN COIN")
-	is_tiles_spawn_coin = true
-	is_tiles_spawn = true
-	
-	var tiles_spawn_array = []
-	array_for_checking_tiles(tiles_spawn_array)
-	tiles_spawn_array = tiles_spawn_array
-
-
-func _on_tiles_spawn_heart_button_pressed():
-	print("TILES SPAWN HEART")
-	is_tiles_spawn_heart = true
-	is_tiles_spawn = true
-	
-	var tiles_spawn_array = []
-	array_for_checking_tiles(tiles_spawn_array)
-	tiles_spawn_array = tiles_spawn_array
-
-
-func _on_tiles_spawn_diamond_button_pressed():
-	print("TILES SPAWN DIAMOND")
-	is_tiles_spawn_diamond = true
-	is_tiles_spawn = true
-	
-	var tiles_spawn_array = []
-	array_for_checking_tiles(tiles_spawn_array)
-	tiles_spawn_array = tiles_spawn_array
-
-
-func _on_tiles_spawn_star_button_pressed():
-	print("TILES SPAWN STAR")
-	is_tiles_spawn_star = true
-	is_tiles_spawn = true
-	
-	var tiles_spawn_array = []
-	array_for_checking_tiles(tiles_spawn_array)
-	tiles_spawn_array = tiles_spawn_array
-
-func _on_stack_button_pressed():
-	print("STACK")
-	is_stack = true
-	
-	var stack_array = []
-	array_for_checking_tiles(stack_array)
-	stack_array = stack_array

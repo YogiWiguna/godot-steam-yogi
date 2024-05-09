@@ -25,7 +25,6 @@ var raycast = true
 var show_menu = true
 var currently_controlled : bool 
 var current_slot_id
-var sprite_texture
 var sprite_path
 
 signal sprite_path_ready
@@ -108,6 +107,7 @@ func _on_animation_player_animation_finished(anim_name):
 	# Set the player_move to false (in physics process)
 	map.is_player_move = false
 	currently_controlled = false
+	
 	# Change animation to idle right after the running animation is done
 	_on_animation_player_animation_changed("Running","Idle_01")
 
