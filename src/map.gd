@@ -225,8 +225,8 @@ func check_tiles(slot_id):
 	var mouse_selected = slot_id
 	#print("Mouse selected :",mouse_selected)
 	var check_arr := []
-	
 	var occupied_arr := []
+	var new_array := []
 	#print("Selected id:",mouse_selected)
 	match player_number:
 		3: pass
@@ -301,31 +301,25 @@ func check_tiles(slot_id):
 					check_arr = id
 		6: pass
 	
-	#print("FILTER ARRAY BEFORE :", gen_neigh_array)
-	#print(floor_array)
-	for i in range(floor_array.size()):
-		if floor_array[i].occupied_by != null:
-			occupied_arr.append(i)
-	
+	# Append the neighbor array
 	if gen_neigh_array.size() == 0:
 		for i in check_arr:
 			if i != 0:
 				gen_neigh_array.append(i + mouse_selected)
 	
+	# Checking the occupied by player floor 
+	for i in range(floor_array.size()):
+		if floor_array[i].occupied_by != null:
+			occupied_arr.append(i)
 	
-	for i in gen_neigh_array.size():
-		print(i)
-		var x = gen_neigh_array[i]
-		var f = occupied_arr[i]
-		if occupied_arr.find(x) == x:
-			gen_neigh_array.remove_at(i)
-	print("GEN NEIGH :", gen_neigh_array) 
-
-		
-	#print("FILTER ARRAY AFTER :", gen_neigh_array)
-	#Utils.map_gen_neigh_array = gen_neigh_array
-	
-	
+	# Compare the neighbors array with occupied by player 
+	# The result is not matching 
+	for i in gen_neigh_array:
+		if i not in occupied_arr:
+			new_array.append(i)
+	# The result mush gen_neigh_array
+	gen_neigh_array = []
+	gen_neigh_array = new_array 
 
 # Spawn Character on top of Tiles, based on transform.position
 func spawn_character_based_on_tile_slot(slot_id):
@@ -389,12 +383,15 @@ func hover_tiles(clicked_id):
 			#print(Utils.move_label.text)
 			is_player_move = true
 			_player_action -= 1
+			for floor in gen_neigh_array:
+				floor_array[floor].get_child(1).set_surface_override_material(0,gui.create_material("TilesPrimaryMaterial",gui.TILES_PRIMARY_MATERIAL))
 			# Unhover the tiles if slot_id is the first value in Utils.gen_neigh_array[0]
 			unhover_tiles(gen_neigh_array)
+			
 			# Set the menu_player_active to false 
 			is_menu_player_active = false
 			return
-			
+	
 	if gen_neigh_array.is_empty():
 		pass
 	else :
@@ -409,7 +406,6 @@ func hover_tiles(clicked_id):
 				
 			elif clicked_id == floor_array[x].slot_id && is_menu_player_show == true && is_mouse_clicked == true:
 				# If generated array isn't null & menu player showing, reset it			
-				
 				# ---
 				print("OUT")
 				#gui._menu_player.hide()
