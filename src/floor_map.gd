@@ -12,9 +12,7 @@ const TILES_PRIMARY = preload("res://assets/materials/tiles_primary_mat.tres")
 @onready var gui = get_node("/root/main/Map/GUI")
 
 # ------------------------------------------
-@onready var player_number = map.player_number
 @onready var static_body_3d = $StaticBody3D
-@onready var gen_neigh_array = map.gen_neigh_array
 @onready var _floor_array = map.floor_array
 
 var slot_id
@@ -49,6 +47,8 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 		if map.floor_array[slot_id].occupied_by: 
 			map.check_tiles(slot_id)
 			map.hover_tiles(slot_id)
+			#if slot_id not in gen_neigh_array:
+				#return
 			if map.floor_array[slot_id].occupied_by.currently_controlled:
 				print("OCCUPIED")
 				map.occupied_before = _floor_array[slot_id].occupied_by
@@ -59,7 +59,7 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 			#if map.floor_array[slot_id].occupied_by
 			print("NOT OCCUPIED or TARGET")
 			print("Floor MAP  : ", map.gen_neigh_array)
-			if map.gen_neigh_array.is_empty():
+			if map.gen_neigh_array.is_empty() or slot_id not in map.gen_neigh_array:
 				return
 			# Set the occupied to the next target floor
 			_floor_array[slot_id].occupied_by = map.occupied_before

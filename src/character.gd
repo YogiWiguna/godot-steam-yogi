@@ -44,6 +44,7 @@ func _physics_process(delta):
 		#print(sprite)
 		#print(map.is_player_move)
 		if map.is_player_move && currently_controlled == true:
+
 			## FOR SET THE MAXIMUM move_vec
 			#print("PLAYER MOVE")
 			raycast = false

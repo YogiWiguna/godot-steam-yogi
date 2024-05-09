@@ -189,7 +189,35 @@ func check_tiles(slot_id):
 	var new_array := []
 	#print("Selected id:",mouse_selected)
 	match player_number:
-		3: pass
+		3: 
+			match mouse_selected:
+				0: 
+					var id = [0,0,0,0,1,0,3,4]
+					check_arr = id 
+				1:
+					var id = [0,0,0,-1,1,2,3,4]
+					check_arr = id 
+				2:
+					var id = [0,0,0,-1,0,2,3,0]
+					check_arr = id 
+				3,6,9,12,15,18,21,24:
+					var id = [0,-3,-2,0,1,0,3,4]
+					check_arr = id 
+				4,7,10,13,16,19,22,25:
+					var id = [-4,-3,-2,-1,1,2,3,4]
+					check_arr = id 
+				5,8,11,14,17,20,23,26:
+					var id = [-4,-3,0,-1,0,2,3,0]
+					check_arr = id 
+				27:
+					var id = [0,-3,-2,0,1,0,0,0]
+					check_arr = id 
+				28:
+					var id = [-4,-3,-2,-1,1,0,0,0]
+					check_arr = id 
+				29: 
+					var id = [-4,-3,0,-1,0,0,0,0]
+					check_arr = id 
 		4: 
 			match mouse_selected:
 				# First Row
@@ -226,24 +254,24 @@ func check_tiles(slot_id):
 			match mouse_selected:
 				# First Row
 				0: 
-					var id = [0,0,0,0,0,0,5,6]
+					var id = [0,0,0,0,1,0,5,6]
 					check_arr = id
 				1,2,3:
-					const id = [0,0,0,0,0,4,5,6]
+					const id = [0,0,0,-1,1,4,5,6]
 					check_arr = id
 				4: 
-					const id = [0,0,0,0,0,4,5,0]
+					const id = [0,0,0,-1,0,4,5,0]
 					check_arr = id
 				# Body Row
 				# Right Section
 				#4,8,12,16,20,24,28,32:
 				5,10,15,20,25,30,35,40:
-					const id = [0,-4,-3,0,1,0,4,5]
+					const id = [0,-5,-4,0,1,0,5,6]
 					check_arr = id
 				# Mid Section
 				#5,6,9,10,13,14,17,18,21,22,25,26,29,30,33,34:
-				6,7,8,11,12,13,16,17,18,21,22,23,26,27,28,31,32,33,36,41,42,43:
-					const id = [-5,-4,-3,-1,1,3,4,5]
+				6,7,8,11,12,13,16,17,18,21,22,23,26,27,28,31,32,33,36,37,38,41,42,43:
+					const id = [-6,-5,-4,-1,1,4,5,6]
 					check_arr = id
 				# Left Section 
 				9,14,19,24,29,34,39,44:
@@ -259,8 +287,35 @@ func check_tiles(slot_id):
 				49:
 					const id = [-6,-5,0,-1,0,0,0,0]
 					check_arr = id
-		6: pass
-	
+		6: 
+			match mouse_selected:
+				0: 
+					const id = [0,0,0,0,1,0,6,7]
+					check_arr = id
+				1,2,3,4:
+					const id = [0,0,0,-1,1,5,6,7]
+					check_arr = id
+				5:
+					const id = [0,0,0,-1,0,5,6,0]
+					check_arr = id
+				6,12,18,24,30,36,42,48:
+					const id = [0,-6,-5,0,1,0,6,7]
+					check_arr = id
+				7,8,9,10,13,14,15,16,19,20,21,22,25,26,27,28,31,32,33,34,37,38,39,40,43,44,45,46,49,50,51,52:
+					const id = [-7,-6,-5,-1,1,5,6,7]
+					check_arr = id
+				11,17,23,29,35,41,47,53:
+					const id = [-7,-6,0,-1,0,5,6,0]
+					check_arr = id
+				54:
+					const id = [0,-6,-5,0,1,0,0,0]
+					check_arr = id
+				55,56,57,58:
+					const id = [-7,-6,-5,-1,1,0,0,0]
+					check_arr = id
+				59:
+					const id = [-7,-6,0,-1,0,0,0,0]
+					check_arr = id
 	# Append the neighbor array
 	if gen_neigh_array.size() == 0:
 		for i in check_arr:
