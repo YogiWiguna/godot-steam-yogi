@@ -452,6 +452,12 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 2
 
+[node name="Panel" type="Panel" parent="Map/GUI"]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+offset_right = 1280.0
+offset_bottom = 721.0
+
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="Map"]
 script = ExtResource("8_rj8du")
 

@@ -2,21 +2,20 @@ extends Camera3D
 
 const ray_length = 1000
 
+@onready var map = get_node("/root/main/Map")
+
 var result
-var is_character_move_to
 
 func _input(event):
 	# Check if the input event is mouse left button 
 	# Set to token decoupled
 	if event.is_action_pressed("left_click"):
-		set_token_to_mouse()
-		if result:
+		raycast_to_mouse()
+		if result && map.is_player_moving == false :
 			#print("RESULT :", result)
 			get_tree().call_group("character", "move_to", result["position"])
-			is_character_move_to = true
 
-
-func set_token_to_mouse():
+func raycast_to_mouse():
 	# Get the viewport and get the mouse position on the camera
 	# The example of the result : (507, 163). It's a Vector 2
 	var mouse_pos = get_viewport().get_mouse_position()

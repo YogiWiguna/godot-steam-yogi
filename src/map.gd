@@ -43,7 +43,8 @@ var slot_id_occupied_before
 var character_floor_sprite
 var character_floor_sprite_path
 var character_current_slot_id
-var is_player_move = false
+var is_player_try_move = false
+var is_player_moving = false
 
 # Variable for gui
 var is_mouse_clicked = false
@@ -390,7 +391,8 @@ func hover_tiles(clicked_id):
 		if !gen_neigh_array.is_empty() && gen_neigh_array.has(clicked_id) :
 			print("PLAYER MOVING")
 			#print(Utils.move_label.text)
-			is_player_move = true
+			is_player_try_move = true
+			
 			_player_action -= 1
 			
 			#for floor in gen_neigh_array:

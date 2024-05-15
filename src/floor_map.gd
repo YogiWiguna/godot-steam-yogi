@@ -61,6 +61,7 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 			print("Floor MAP  : ", map.gen_neigh_array)
 			if map.gen_neigh_array.is_empty() or slot_id not in map.gen_neigh_array:
 				return
+			print("Not OCC")
 			# Set the occupied to the next target floor
 			_floor_array[slot_id].occupied_by = map.occupied_before
 			# Set the from (player floor before move position) floor to null 

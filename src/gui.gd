@@ -17,6 +17,8 @@ const TILES_TERITARY_MATERIAL = "fec490"
 @onready var phase_timer = $"../PhaseTimer"
 @onready var floor_map_region: Node3D = $"../FloorMapRegion"
 
+@onready var panel = $Panel
+
 ## DEBUG UI
 @onready var _debug: Control = $Debug
 @onready var _texture_rect_debug: TextureRect = $Debug/TextureRectDebug

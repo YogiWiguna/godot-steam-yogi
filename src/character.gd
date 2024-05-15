@@ -37,14 +37,14 @@ func _physics_process(delta):
 	if path_index < path.size():
 		var move_vec = (path[path_index] - global_transform.origin)
 		#print(Utils.player_move)
+		
 		if raycast:
 			#Utils.mouse_selected = ray_cast_3d.get_collider().get_parent().slot_id
 			get_raycast_tiles()
 
 		#print(sprite)
 		#print(map.is_player_move)
-		if map.is_player_move && currently_controlled == true:
-
+		if map.is_player_try_move && currently_controlled == true:
 			## FOR SET THE MAXIMUM move_vec
 			#print("PLAYER MOVE")
 			raycast = false
@@ -64,9 +64,11 @@ func _physics_process(delta):
 				#move_and_slide(move_vec.normalized() * move_speed, Vector3(0,1,0))
 				# Play the animations running 
 				animation_player.play("Running")
+				gui.panel.show()
 				# Set the player position 
 				position.y =  0.637
 				move_and_slide()
+				map.is_player_moving = true
 				# If animation finished connect it to the _on_animation_player_animation_finished functions
 				animation_player.animation_finished.connect(_on_animation_player_animation_finished)
 
@@ -106,14 +108,16 @@ func _on_animation_player_animation_finished(anim_name):
 	# Get the raycast_tiles (so we know where the player is) by slot_id
 	get_raycast_tiles()
 	# Set the player_move to false (in physics process)
-	map.is_player_move = false
+	map.is_player_try_move = false
 	currently_controlled = false
+	map.is_player_moving = false
 	
 	# Change animation to idle right after the running animation is done
 	_on_animation_player_animation_changed("Running","Idle_01")
 
 func _on_animation_player_animation_changed(old_name, new_name):
 	animation_player.play("Idle_01")
+	gui.panel.hide()
 
 
 #func _on_input_event(camera, event, position, normal, shape_idx):
