@@ -53,7 +53,7 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 				print("OCCUPIED")
 				map.occupied_before = _floor_array[slot_id].occupied_by
 				map.slot_id_occupied_before = slot_id
-				map.hilight_material_gen_neigh_array(gui.create_material("BlackMaterial",gui.BLACK_MATERIAL))
+				map.hilight_material_gen_neigh_array(gui.create_material("BlackMaterial",gui.GREEN_MATERIAL))
 			
 		else :
 			#if map.floor_array[slot_id].occupied_by
@@ -73,8 +73,8 @@ func _on_input_event(camera, event, position, normal, shape_idx):
 		
 ## When the mouse enter the floor_map show the hover tiles
 func _on_static_body_3d_mouse_entered():
-	var tiles = _floor_array[slot_id].get_child(1)
-	tiles.set_surface_override_material(0,gui.create_material("BlackMaterial",gui.BLACK_MATERIAL))
+	var tiles = _floor_array[slot_id].get_child(1).get_child(1)
+	tiles.set_surface_override_material(0,gui.create_material("BlackMaterial",gui.GREEN_MATERIAL))
 	is_exited = false
 
 ## When the mouse exited the floor_map clear the hover tiles

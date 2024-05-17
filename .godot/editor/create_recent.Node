@@ -1,3 +1,4 @@
+MeshInstance3D
 Panel
 Button
 Camera3D
@@ -6,6 +7,5 @@ Node3D
 NavigationAgent3D
 CollisionShape3D
 StaticBody3D
-MeshInstance3D
 NavigationRegion3D
 Node

@@ -6,8 +6,11 @@ class_name GUI
 @onready var character = Character.new()
 
 ## MATERIAL
-const BLACK_MATERIAL = "000000"
+const BLACK_MATERIAL = "2e2e2e5b"
 const RED_MATERIAL = "ef0000"
+const GREY_MATERIAL = "c8c8c8"
+const GREEN_MATERIAL = "15e438bf"
+const BLUE_MATERIAL = "3674ff"
 const TILES_PRIMARY_MATERIAL = "fbe786"
 const TILES_TERITARY_MATERIAL = "fec490"
 
@@ -96,7 +99,9 @@ var is_phase_two_second = false
 static func create_material(name: String, color, texture=null, shaded_mode=0):
 	var material = StandardMaterial3D.new()
 	material.name = name
-	material.flags_transparent = true
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	#material.refraction_enabled= true
+	#material.proximity_fade_enabled = true
 	material.albedo_color = Color(color)
 	material.albedo_texture = texture
 	#material.shading_mode = shaded_mode

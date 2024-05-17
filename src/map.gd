@@ -5,7 +5,7 @@ class_name Map
 # ONREADY 
 @onready var floor = preload("res://scenes/floor_map.tscn")
 @onready var tile = preload("res://scenes/tile.tscn")
-
+@onready var cursor = load("res://assets/cursor/Cursor@1x.png")
 # Dependencies
 @onready var main = get_node("/root/main")
 @onready var gui = get_node("/root/main/Map/GUI")
@@ -57,6 +57,8 @@ signal player_number_active
 
 
 func _ready():
+	# Cursor
+	Input.set_custom_mouse_cursor(cursor)
 	#DebugMenu.style = DebugMenu.Style.VISIBLE_DETAILED
 	player_number = 4
 	
@@ -99,6 +101,9 @@ func set_start_and_finish_tile_material(player_number : int):
 				0,1,2,3,36,37,38,39:
 					tiles = floor_array[x].get_child(1)
 					tiles.set_surface_override_material(0,null)
+				#4,5,6,7,8,9,10,11,12,13,14,15:
+					#tiles = floor_array[x].get_child(1)
+					#tiles.set_surface_override_material(0,gui.create_material("Material Primary", gui.BLACK_MATERIAL))
 		5: for x in floor_array_slot_id:
 			match x:
 				0,1,2,3,4,45,46,47,48,49:

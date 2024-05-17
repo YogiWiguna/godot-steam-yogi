@@ -1,9 +1,17 @@
-[gd_scene load_steps=4 format=3 uid="uid://8204havtwllt"]
+[gd_scene load_steps=6 format=3 uid="uid://8204havtwllt"]
 
 [ext_resource type="Material" uid="uid://braxgspqqa04e" path="res://assets/materials/tiles_primary_mat.tres" id="1_l1k3n"]
 [ext_resource type="Texture2D" uid="uid://c1s6qsix512ap" path="res://assets/tiles/tiles_4_diffuse_tex.png" id="2_db7xx"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_7cc5o"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_50k3s"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_74mpw"]
+material = SubResource("StandardMaterial3D_50k3s")
+subdivide_width = 6
 
 [node name="Tiles" type="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0.132251, 0, 0, 0, 1, 0, 0, 0)
@@ -11,5 +19,9 @@ mesh = SubResource("BoxMesh_7cc5o")
 surface_material_override/0 = ExtResource("1_l1k3n")
 
 [node name="Token" type="Sprite3D" parent="."]
-transform = Transform3D(0.0470059, 0, 0, 0, -2.04445e-09, 1, 0, -0.0467714, -4.37114e-08, 0, 0.52, 0)
+transform = Transform3D(0.0470059, 0, 0, 0, -2.04445e-09, 1, 0, -0.0467714, -4.37114e-08, 0, 0.53, 0)
 texture = ExtResource("2_db7xx")
+
+[node name="HoverTiles" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.488166, 0, 0, 0, 1, 0, 0, 0, 0.470838, 0.00440997, 0.51, 0.013)
+mesh = SubResource("PlaneMesh_74mpw")
